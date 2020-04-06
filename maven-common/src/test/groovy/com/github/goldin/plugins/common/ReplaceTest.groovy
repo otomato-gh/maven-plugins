@@ -168,14 +168,14 @@ class ReplaceTest
         replace( MAIL, new Replace( from     : MAIL_PATTERN,
                                     to       : '\\' ),
                  '',
-                 StringIndexOutOfBoundsException,
-                 'String index out of range: 1' )
+                 IllegalArgumentException,
+                 'character to be escaped is missing' )
 
         replace( MAIL, new Replace( from     : MAIL_PATTERN,
                                     to       : '\\' * 3 ),
                '',
-               StringIndexOutOfBoundsException,
-               'String index out of range: 3' )
+              IllegalArgumentException,
+                 'character to be escaped is missing' )
     }
 
 

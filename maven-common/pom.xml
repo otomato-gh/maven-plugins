@@ -122,12 +122,12 @@
             <version>${aether-version}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.eclipse.aether</groupId>
             <artifactId>aether-connector-wagon</artifactId>
             <version>${aether-version}</version>
             <scope>provided</scope>
-        </dependency>
+        </dependency> -->
 
         <!-- ~~~~~~~~~~~~~~~~~~~~~~~ -->
         <!-- org.apache.maven.shared -->

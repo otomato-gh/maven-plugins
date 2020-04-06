@@ -63,12 +63,21 @@ final class ConversionUtils
     }
 
 
+    @Requires({ aetherExclusion })
+    @Ensures ({ result })
+    static org.apache.maven.artifact.Artifact toMavenArtifact ( org.eclipse.aether.graph.Exclusion aetherExclusion )
+    {
+        aetherExclusion.with {
+            toMavenArtifact( groupId, artifactId, "*", null, extension, classifier, true)
+        }
+    }
+
     @Requires({ mavenArtifact })
     @Ensures ({ result })
     static org.eclipse.aether.artifact.Artifact toAetherArtifact ( org.apache.maven.artifact.Artifact mavenArtifact )
     {
         mavenArtifact.with {
-            new org.eclipse.aether.util.artifact.DefaultArtifact(
+            new org.eclipse.aether.artifact.DefaultArtifact(
                     groupId, artifactId, classifier, type, version, null, file )
         }
     }

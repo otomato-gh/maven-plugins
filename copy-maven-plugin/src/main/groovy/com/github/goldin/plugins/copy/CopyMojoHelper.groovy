@@ -226,7 +226,7 @@ final class CopyMojoHelper
      * @param respectScopeFilter      whether scope filter should be respected when traversing the tree
      * @param respectDependencyFilter whether dependency filter should be respected when traversing the tree
      * @param includeOptional         whether optional dependencies should be included
-     * @param failOnError             whether execution should fail if failed to collect dependencies
+     * @param failOnError          /   whether execution should fail if failed to collect dependencies
      * @param depth                   depth of transitive dependencies to collect
      * @param currentDepth            current transitive dependencies depth
      * @param resultAggregator        aggregates results
@@ -251,17 +251,22 @@ final class CopyMojoHelper
                                                                      int             depth,
                                                                      int             currentDepth      = 0,
                                                                      Set<Artifact>   resultAggregator  = new HashSet<Artifact>(),
-                                                                     Set<Artifact>   visitedAggregator = new HashSet<Artifact>())
+                                                                     Set<Artifact>   visitedAggregator = new HashSet<Artifact>(),
+                                                                     Set<Artifact>   excludedAggregator = new HashSet<Artifact>())
     {
+         failOrWarn( false, "visitedAggregator: $visitedAggregator ", null )
+
+        failOrWarn( false, "excludedAggregator: $excludedAggregator ", null )
+
         assert artifact.groupId && artifact.artifactId && artifact.version
-        assert ( ! (( artifact in resultAggregator ) || ( artifact in visitedAggregator )))
+        assert ( ! (( artifact in resultAggregator ) || ( artifact in visitedAggregator ) || ( artifact in excludedAggregator ))  )
         assert (( depth < 0 ) || ( currentDepth <= depth )), "Required depth is [$depth], current depth is [$currentDepth]"
 
         boolean stopRecursion =
             ( respectScopeFilter      && ( ! isArtifactIncluded( artifact, scopeFilter      ))) ||  // Excluded by scope filtering
             ( respectDependencyFilter && ( ! isArtifactIncluded( artifact, dependencyFilter ))) ||  // Excluded by dependency filtering
-            ( artifact.optional       && ( ! includeOptional ))                                     // Excluded by being optional
-
+            ( artifact.optional       && ( ! includeOptional )) ||                                     // Excluded by being optional
+            ( artifact in excludedAggregator )
         if ( stopRecursion ) { return resultAggregator }
 
         visitedAggregator << artifact
@@ -274,6 +279,19 @@ final class CopyMojoHelper
 
             mojo.repoSystem.readArtifactDescriptor( mojo.repoSession, request ).
             dependencies.
+            each {
+                
+                it.exclusions.findResults { 
+                    it !=null? toMavenArtifact( it ): null}.
+                    each  {
+                        if (it.artifactId == "annotation-indexer") {
+                            failOrWarn( false, "excluding: [$it.artifactId] ", null )
+                        }
+                        excludedAggregator << it
+                    }
+            }
+            mojo.repoSystem.readArtifactDescriptor( mojo.repoSession, request ).
+            dependencies.
             collect { toMavenArtifact( it )}.
             each    {
                 Artifact childArtifact ->
@@ -283,7 +301,7 @@ final class CopyMojoHelper
                     collectArtifactDependencies( childArtifact, scopeFilter, dependencyFilter,
                                                  true, respectDependencyFilter, includeOptional, failOnError,
                                                  depth,
-                                                 currentDepth + 1, resultAggregator, visitedAggregator )
+                                                 currentDepth + 1, resultAggregator, visitedAggregator, excludedAggregator )
                 }
             }
         }
