@@ -78,8 +78,8 @@
         <!-- http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.apache.ant%22%20AND%20a%3A%22ant%22 -->
         <ant-version>1.9.1</ant-version>
 
-        <!-- http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.sonatype.aether%22%20AND%20a%3A%22aether-api%22 -->
-        <aether-version>1.13.1</aether-version>
+        <!-- http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.eclipse.aether%22%20AND%20a%3A%22aether-api%22 -->
+        <aether-version>1.1.0</aether-version>
 
         <!-- http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.gcontracts%22%20AND%20a%3A%22gcontracts-core%22 -->
         <gcontracts-version>1.2.12</gcontracts-version>
@@ -103,11 +103,11 @@
         <!-- Plugins -->
         <!-- ~~~~~~~ -->
 
-        <module>duplicates-finder-plugin</module>
+        <!-- <module>duplicates-finder-plugin</module>
         <module>ivy-maven-plugin</module>
-        <module>about-maven-plugin</module>
+        <module>about-maven-plugin</module> -->
         <module>copy-maven-plugin</module>
-        <module>jenkins-maven-plugin</module>
+        <!-- <module>jenkins-maven-plugin</module>
         <module>assert-maven-plugin</module>
         <module>mail-maven-plugin</module>
         <module>find-maven-plugin</module>
@@ -115,7 +115,7 @@
         <module>properties-maven-plugin</module>
         <module>silencer-maven-plugin</module>
         <module>sshexec-maven-plugin</module>
-        <module>spring-batch-maven-plugin</module>
+        <module>spring-batch-maven-plugin</module> -->
     </modules>
 
 
@@ -260,7 +260,7 @@
 
         <plugins>
 
-            <plugin>
+            <!-- <plugin>
                 <groupId>com.github.goldin</groupId>
                 <artifactId>silencer-maven-plugin</artifactId>
                 <version>${previous-plugins-version}</version>
@@ -278,7 +278,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin> -->
 
             <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
             <!-- Enforcing Maven/Java versions                                                 -->
